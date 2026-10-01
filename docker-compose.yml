@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3003
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    networks:
+      - campus-network
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb+srv://patelkriti261_db_user:K75YQBCA0LDeq8vT@cluster0.cqefoq0.mongodb.net/campusconnect?retryWrites=true&w=majority&appName=Cluster0
+    networks:
+      - campus-network
+
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    environment:
+      - PORT=3002
+      - MONGODB_URI=mongodb+srv://patelkriti261_db_user:K75YQBCA0LDeq8vT@cluster0.cqefoq0.mongodb.net/campusconnect?retryWrites=true&w=majority&appName=Cluster0
+    networks:
+      - campus-network
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    environment:
+      - PORT=3003
+      - MONGODB_URI=mongodb+srv://patelkriti261_db_user:K75YQBCA0LDeq8vT@cluster0.cqefoq0.mongodb.net/campusconnect?retryWrites=true&w=majority&appName=Cluster0
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+    depends_on:
+      - user-service
+      - product-service
+    networks:
+      - campus-network
+
+networks:
+  campus-network:
+    driver: bridge
