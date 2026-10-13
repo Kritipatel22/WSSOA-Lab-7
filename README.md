@@ -23,6 +23,7 @@ This lab implements an API Gateway architectural pattern to decouple client appl
   1. Deployed the `user-service` and `api-gateway` as Web Services on Render using Docker runtimes.
   2. Connected the `user-service` to MongoDB Atlas using cloud environment variables (`PORT` and `MONGODB_URI`).
   3. Linked the `api-gateway` to the cloud user service using the `USER_SERVICE_URL` environment variable pointing to the public Render URL (`https://user-service-pgb8.onrender.com`).
+  **Public Gateway URL:** `https://api-gateway-dxvw.onrender.com`
 
 ## 4. Troubleshooting Notes
 * **Cold Starts & 502/503 Errors:** Free-tier cloud instances (such as Render) spin down after periods of inactivity. The first request after a period of inactivity may experience a delay or a temporary `502 Bad Gateway` while downstream microservices wake up. Allowing 30-50 seconds for services to reach a **Live** status resolves the timeout.
