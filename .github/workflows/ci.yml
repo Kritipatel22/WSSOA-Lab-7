@@ -1,0 +1,34 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Dependencies
+      run: |
+        npm install --prefix api-gateway
+        npm install --prefix user-service
+        npm install --prefix product-service
+        npm install --prefix order-service
+
+    - name: Build Docker Images
+      run: |
+        docker build -t lab-7-api-gateway:${{ github.sha }} ./api-gateway
+        docker build -t lab-7-user-service:${{ github.sha }} ./user-service
+        docker build -t lab-7-product-service:${{ github.sha }} ./product-service
+        docker build -t lab-7-order-service:${{ github.sha }} ./order-service
