@@ -48,6 +48,11 @@ app.use('/orders', createProxyMiddleware({
     onError: proxyErrorHandler
 }));
 
+// Health check endpoint for Kubernetes probes
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'UP', service: 'running', timestamp: new Date() });
+});
+
 app.listen(PORT, () => {
     console.log(`API Gateway running on port ${PORT}`);
     console.log(`Routing /users -> ${USER_SERVICE_URL}`);

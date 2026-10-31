@@ -124,6 +124,11 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
+// Health check endpoint for Kubernetes probes
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'UP', service: 'running', timestamp: new Date() });
+});
+
 app.listen(PORT, () => {
   console.log(`Product Service running on port ${PORT}`);
 });
